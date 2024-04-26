@@ -32,12 +32,7 @@ jobs:
       
       - name: Apply or Destroy Terraform
         run: |
-          if [ "$ACTION_DESTROY" == "true" ]; then
-            echo "Destroying infrastructure"
-            terraform destroy -auto-approve
-          else
-            echo "Applying infrastructure"
-            terraform apply -auto-approve
-          if
+          echo "terraform apply -auto-approve"
+
         working-directory: ${{ github.workspace }}/terraform
         
