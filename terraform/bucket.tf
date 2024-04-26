@@ -3,7 +3,8 @@ resource "aws_s3_bucket" "mybucket" {
 }
 
 resource "aws_s3_bucket_website_configuration" "mybucket" {
-  bucket = aws_s3_bucket.mybucket.id
+  bucket     = aws_s3_bucket.mybucket.id
+  depends_on = [aws_s3_bucket.mybucket]
 
   index_document {
     suffix = "index.html"
@@ -15,8 +16,8 @@ resource "aws_s3_bucket_website_configuration" "mybucket" {
 }
 
 resource "aws_s3_bucket_public_access_block" "mybucket" {
-  bucket = aws_s3_bucket.mybucket.id
-
+  bucket                  = aws_s3_bucket.mybucket.id
+  depends_on              = [aws_s3_bucket_website_configuration.mybucket]
   block_public_acls       = false
   block_public_policy     = false
   ignore_public_acls      = false
@@ -24,7 +25,8 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
 }
 
 resource "aws_s3_bucket_policy" "meubucket_policy" {
-  bucket = aws_s3_bucket.mybucket.id
+  bucket     = aws_s3_bucket.mybucket.id
+  depends_on = [aws_s3_bucket_public_access_block.mybucket]
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -38,8 +40,9 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
   })
 }
 
-resource "aws_s3_bucket_versioning" "versioning_example" {
-  bucket = aws_s3_bucket.mybucket.id
+resource "aws_s3_bucket_versioning" "my-versioning" {
+  bucket     = aws_s3_bucket.mybucket.id
+  depends_on = [aws_s3_bucket_policy.meubucket_policy]
   versioning_configuration {
     status = "Enabled"
   }
@@ -54,5 +57,9 @@ resource "aws_s3_object" "upload_files" {
   source = "${path.module}/../site/${each.value}"
   depends_on = [
     aws_s3_bucket.mybucket,
+    aws_s3_bucket_versioning.my-versioning,
+    aws_s3_bucket_public_access_block.mybucket,
+    aws_s3_bucket_policy.meubucket_policy,
+    aws_s3_bucket_website_configuration.mybucket
   ]
 }
