@@ -55,6 +55,7 @@ resource "aws_s3_object" "upload_files" {
   bucket = aws_s3_bucket.mybucket.id
   key    = each.value
   source = "${path.module}/../site/${each.value}"
+  //confere as dependencias
   depends_on = [
     aws_s3_bucket.mybucket,
     aws_s3_bucket_versioning.my-versioning,
