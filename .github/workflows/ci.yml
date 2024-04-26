@@ -29,5 +29,5 @@ jobs:
         run: |
           echo "terraform apply -auto-approve"
 
-        working-directory: ${{ github.workspace }}../terraform
+        working-directory: ${{ github.workspace }}/terraform
         
