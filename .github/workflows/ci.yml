@@ -19,21 +19,23 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: "1.8.1"  # Especifica a versão do Terraform
+          terraform_version: "1.8.1"  # Assegure-se de que esta versão está correta.
 
       - name: Load Environment Variables
         run: |
           if [ -f site/.env ]; then
-            echo "ACTION_DESTROY=$(grep 'ACTION_DESTROY' site/.env | cut -d '=' -f2)" >> $GITHUB_ENV
+            echo "ACTION_DESTROY=$(grep 'ACTION_DESTROY' site/.env | cut -d '=' -f2 | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
           else
             echo "ERROR: .env file not found, setting default ACTION_DESTROY=false"
             echo "ACTION_DESTROY=false" >> $GITHUB_ENV
           fi
-        
+        working-directory: ./
+
       - name: Initialize Terraform
         run: terraform init
+        working-directory: ./terraform
 
-      - name: Terraform Apply or Destroy
+      - name: Apply or Destroy Terraform
         run: |
           if [ "$ACTION_DESTROY" == "true" ]; then
             echo "Destroying infrastructure"
@@ -41,6 +43,4 @@ jobs:
           else
             echo "Applying infrastructure"
             terraform apply -auto-approve
-          fi
-      
-      
+        working-directory: ./terraform
