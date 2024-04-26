@@ -38,5 +38,6 @@ jobs:
           else
             echo "Applying infrastructure"
             terraform apply -auto-approve
+          if
         working-directory: ${{ github.workspace }}/terraform
         
