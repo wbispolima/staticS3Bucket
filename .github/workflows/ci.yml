@@ -23,7 +23,7 @@ jobs:
 
       - name: Load Environment Variables
         run: |
-          echo "ACTION_DESTROY=true" >> $GITHUB_ENV
+          echo "ACTION_DESTROY=false" >> $GITHUB_ENV
         working-directory: ${{ github.workspace }}/site
       
       - name: Initialize Terraform
