@@ -23,11 +23,11 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: ${{ github.workspace }}/terraform
+        working-directory: /terraform
       
       - name: Apply or Destroy Terraform
         run: |
           echo "terraform apply -auto-approve"
 
-        working-directory: ${{ github.workspace }}/terraform
+        working-directory: /terraform
         
