@@ -23,7 +23,7 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: ${{ github.workspace }}../terraform
+        working-directory: ${{ github.workspace }}/terraform
       
       - name: Apply or Destroy Terraform
         run: |
