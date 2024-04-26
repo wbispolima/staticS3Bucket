@@ -21,18 +21,13 @@ jobs:
         with:
           terraform_version: "1.8.1" 
 
-      - name: Load Environment Variables
-        run: |
-          echo "ACTION_DESTROY=false" >> $GITHUB_ENV
-        working-directory: ${{ github.workspace }}/site
-      
       - name: Initialize Terraform
         run: terraform init
-        working-directory: ${{ github.workspace }}/terraform
+        working-directory: ${{ github.workspace }}../terraform
       
       - name: Apply or Destroy Terraform
         run: |
           echo "terraform apply -auto-approve"
 
-        working-directory: ${{ github.workspace }}/terraform
+        working-directory: ${{ github.workspace }}../terraform
         
