@@ -1,0 +1,73 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    background-color: black;
+    color: white; /* Assegura que o texto padrão seja branco */
+    font-family: Arial, sans-serif; /* Melhora a legibilidade */
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column; /* Organiza os elementos em coluna */
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 20px; /* Adiciona espaçamento ao redor dos elementos */
+    text-align: center; /* Centraliza o texto */
+}
+
+.box {
+    border: 2px solid white;
+    border-radius: 15px;
+    background-color: #bcbcbc;
+    padding: 35px;
+    box-shadow: 0 0 32px rgb(29, 59, 207);
+    margin-bottom: 20px; /* Adiciona espaço abaixo da caixa */
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+.error-wrapper {
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.error-wrapper h1, .error-wrapper h2 {
+    margin: 20px 0;
+}
+
+.error-wrapper p {
+    margin: 10px 0;
+}
+
+.error-wrapper a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #FFF;
+    background-color: red;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    box-shadow: 0 0 5px #000;
+}
+
+.error-wrapper a:hover {
+    background-color: darkred;
+}
+
+footer {
+    margin-top: 20px; /* Adiciona espaço acima do rodapé */
+}
+
+a {
+    color: #1E90FF; /* Muda a cor dos links para um azul visível */
+    text-decoration: none; /* Remove o sublinhado dos links */
+}
+
+a:hover {
+    text-decoration: underline; /* Adiciona um sublinhado ao passar o mouse */
+}
