@@ -23,16 +23,22 @@ jobs:
 
       - name: Load Environment Variables
         run: |
-          echo "ACTION_DESTROY=$(cat site/.env | grep ACTION_DESTROY | cut -d '=' -f2)" >> $GITHUB_ENV
-
+          if [ -f site/.env ]; then
+            echo "ACTION_DESTROY=$(grep 'ACTION_DESTROY' site/.env | cut -d '=' -f2)" >> $GITHUB_ENV
+          else
+            echo "ERROR: .env file not found, setting default ACTION_DESTROY=false"
+            echo "ACTION_DESTROY=false" >> $GITHUB_ENV
+          fi
+        
       - name: Initialize Terraform
         run: terraform init
 
       - name: Terraform Apply or Destroy
         run: |
-          if [ "${{ env.ACTION_DESTROY }}" == "true" ]; then
+          if [ "$ACTION_DESTROY" == "true" ]; then
             echo "Destroying infrastructure"
             terraform destroy -auto-approve
           else
             echo "Applying infrastructure"
             terraform apply -auto-approve
+      
