@@ -17,5 +17,5 @@ jobs:
       - name: Read Variable from Config File
         run: |
           echo "Lendo variável do arquivo..."
-          VAR_VALUE=$(cat ./action-config.env | grep 'ACTION_TYPE=' | cut -d '=' -f2)
-          echo "Valor da Variável: $VAR_VALUE"
+          content = `cat ./action-config.env`
+          echo "Valor da Variável: $content"
