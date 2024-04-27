@@ -1,21 +1,19 @@
-name: Acesso Arquivo
+name: Exemplo de Leitura de Arquivo
 
 on:
     workflow_dispatch:
     push:
-        branches:
-            - test
-              
+      branches:
+        - test
 
 jobs:
-  read_variable:
+  read-file:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Read Variable from Config File
+      - name: Read env file
         run: |
-          echo "Lendo variável do arquivo..."
           conteudo=$(cat action-config.env)
-          echo $content
+          echo "$conteudo"
