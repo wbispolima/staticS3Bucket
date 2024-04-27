@@ -26,19 +26,12 @@ jobs:
         run: terraform init
         working-directory: ./terraform
 
-      - name: Apply or Destroy Infrastructure
+      - name: Apply or Destroy Terraform
         run: |
-          ACTION_TYPE=$(cat ./terraform/action-config.env | grep 'ACTION_TYPE' | cut -d '=' -f2)
-          if: ACTION_TYPE == "destroy"
-              terraform apply --destroy --auto-approve
-          if: ACTION_TYPE == "apply"
-              terraform apply --auto-approve
-              
+          terraform apply --auto-approve
+        working-directory: ./terraform             
         working-directory: ./terraform
               
         
         
-#      - name: Apply or Destroy Terraform
-#        run: |
-#          terraform apply --destroy --auto-approve
-#        working-directory: ./terraform
+

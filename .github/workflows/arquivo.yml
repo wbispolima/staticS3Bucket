@@ -2,9 +2,7 @@ name: Exemplo de Leitura de Arquivo
 
 on:
     workflow_dispatch:
-    push:
-      branches:
-        - test
+
 
 jobs:
   read-file:
