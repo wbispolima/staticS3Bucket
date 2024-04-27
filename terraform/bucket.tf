@@ -17,7 +17,10 @@ resource "aws_s3_bucket_website_configuration" "mybucket" {
 
 resource "aws_s3_bucket_public_access_block" "mybucket" {
   bucket                  = aws_s3_bucket.mybucket.id
-  depends_on              = [aws_s3_bucket_website_configuration.mybucket]
+  depends_on = [
+    aws_s3_bucket.mybucket,
+    aws_s3_bucket_website_configuration.mybucket
+  ]
   block_public_acls       = false
   block_public_policy     = false
   ignore_public_acls      = false
@@ -26,7 +29,11 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
 
 resource "aws_s3_bucket_policy" "meubucket_policy" {
   bucket     = aws_s3_bucket.mybucket.id
-  depends_on = [aws_s3_bucket_public_access_block.mybucket]
+  depends_on = [
+    aws_s3_bucket.mybucket,
+    aws_s3_bucket_public_access_block.mybucket,
+    aws_s3_bucket_website_configuration.mybucket
+  ]
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
@@ -42,7 +49,12 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
 
 resource "aws_s3_bucket_versioning" "my-versioning" {
   bucket     = aws_s3_bucket.mybucket.id
-  depends_on = [aws_s3_bucket_policy.meubucket_policy]
+  depends_on = [
+    aws_s3_bucket.mybucket,
+    aws_s3_bucket_public_access_block.mybucket,
+    aws_s3_bucket_policy.meubucket_policy,
+    aws_s3_bucket_website_configuration.mybucket
+  ]
   versioning_configuration {
     status = "Enabled"
   }
