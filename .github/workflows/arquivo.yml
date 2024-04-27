@@ -18,5 +18,5 @@ jobs:
         
       - name: Read env file
         run: |
-          conteudo=$(cat action-config.env)
+          conteudo=$(.github/workflows/cat action-config.env)
           echo "$conteudo"
