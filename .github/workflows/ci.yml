@@ -25,8 +25,21 @@ jobs:
       - name: Initialize Terraform
         run: terraform init
         working-directory: ./terraform
-      
-      - name: Apply or Destroy Terraform
+
+      - name: Apply or Destroy Infrastructure
         run: |
-          terraform apply --destroy --auto-approve
+          if [[ "$(cat action-config.env | grep 'ACTION_TYPE' | cut -d '=' -f2)" == "destroy" ]]; then
+            echo "Destroying infrastructure"
+            terraform apply --destroy --auto-approve
+          elif [[ "$(cat action-config.env | grep 'ACTION_TYPE' | cut -d '=' -f2)" == "apply" ]]; then
+            echo "Applying infrastructure"
+            terraform apply --auto-approve
+          fi
         working-directory: ./terraform
+              
+        
+        
+#      - name: Apply or Destroy Terraform
+#        run: |
+#          terraform apply --destroy --auto-approve
+#        working-directory: ./terraform
