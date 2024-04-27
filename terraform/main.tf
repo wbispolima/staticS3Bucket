@@ -8,10 +8,10 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "ifmt-devops-tfstate"
-    key            = "staticS3Bucket/terraform.tfstate"
-    region         = "sa-east-1"
-    encrypt        = true
+    bucket  = "ifmt-devops-tfstate"
+    key     = "staticS3Bucket/terraform.tfstate"
+    region  = "sa-east-1"
+    encrypt = true
   }
 }
 
