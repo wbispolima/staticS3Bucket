@@ -28,7 +28,7 @@ jobs:
 
       - name: Apply or Destroy Infrastructure
         run: |
-          ACTION_TYPE=$(cat action-config.env | grep 'ACTION_TYPE' | cut -d '=' -f2)
+          ACTION_TYPE=$(cat ./terraform/action-config.env | grep 'ACTION_TYPE' | cut -d '=' -f2)
           if: ACTION_TYPE == "destroy"
               terraform apply --destroy --auto-approve
           if: ACTION_TYPE == "apply"
