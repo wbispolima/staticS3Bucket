@@ -1,0 +1,21 @@
+name: Acesso Arquivo
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - test
+              
+
+jobs:
+  read_variable:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Read Variable from Config File
+        run: |
+          echo "Lendo variável do arquivo..."
+          VAR_VALUE=$(cat ./caminho/para/action-config.env | grep 'VARIABLE_NAME=' | cut -d '=' -f2)
+          echo "Valor da Variável: $VAR_VALUE"
