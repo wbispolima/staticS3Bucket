@@ -17,5 +17,5 @@ jobs:
       - name: Read Variable from Config File
         run: |
           echo "Lendo variável do arquivo..."
-          content = cat ./action-config.env
+          content=cat ./action-config.env
           echo "Valor da Variável: $content"
