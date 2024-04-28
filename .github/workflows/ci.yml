@@ -1,6 +1,7 @@
 name: Terraform Apply or Destroy
 
-on: [push]
+on: 
+  workflow_dispatch:
 
 jobs:
   terraform-action:
