@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "ACTION=$(grep 'ACTION_TYPE' action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
           
-      - name: Rodar se for apply
-        if: '$ACTION == "apply"'
-        run: |
-          echo "aqui se for apply"
+#      - name: Rodar se for apply
+#        if: '$ACTION == "apply"'
+#        run: |
+#          echo "aqui se for apply"
