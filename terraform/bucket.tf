@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "mybucket" {
   bucket = "ifmt-devops-profbispo01"
+  
 }
 
 resource "aws_s3_bucket_website_configuration" "mybucket" {
