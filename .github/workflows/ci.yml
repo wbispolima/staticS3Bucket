@@ -15,16 +15,16 @@ jobs:
 
       - name: Read environment variable
         run: |
-          echo "ACTION_TYPE=$(grep 'ACTION_TYPE' action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
+          echo "ACTION_TYPE=$(grep 'ACTION_TYPE' .github/workflows/action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
 
       - name: Terraform Apply
         if: env.ACTION_TYPE == 'apply'
         run: |
           terraform init
-          terraform apply -auto-approve
+          terraform apply --auto-approve
 
       - name: Terraform Destroy
         if: env.ACTION_TYPE == 'destroy'
         run: |
           terraform init
-          terraform destroy -auto-approve
+          terraform apply --destroy --auto-approve
