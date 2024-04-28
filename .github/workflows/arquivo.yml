@@ -11,13 +11,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-#      - name: List files
-#        run: ls -la
-        
-#      - name: Read env file
-#        run: |
-#          conteudo=$(cat .github/workflows/action-config.env)
-#          echo "$conteudo"
       - name: Read env file and set ACTION variable
         id: setvar
         run: |
