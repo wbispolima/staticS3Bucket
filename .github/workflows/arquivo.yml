@@ -24,6 +24,6 @@ jobs:
           echo "ACTION=$(grep 'ACTION_TYPE' .github/workflows/action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
           
       - name: Rodar se for apply
-        if: '$ACTION == "apply"'
+        if: $ACTION == "apply"
         run: |
           echo "aqui se for apply"
