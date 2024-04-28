@@ -1,36 +1,29 @@
-name: Terraform Workflow
+name: Terraform Apply or Destroy
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      
+on: [push]
+
 jobs:
-  terraform:
+  terraform-action:
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      TF_LOG: DEBUG
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: "1.8.1" 
 
-      - name: Initialize Terraform
-        run: terraform init
-        working-directory: ./terraform
-
-      - name: Apply or Destroy Terraform
+      - name: Read environment variable
         run: |
-          terraform apply --auto-approve
-        working-directory: ./terraform             
-              
-        
-        
+          echo "ACTION_TYPE=$(grep 'ACTION_TYPE' action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
 
+      - name: Terraform Apply
+        if: env.ACTION_TYPE == 'apply'
+        run: |
+          terraform init
+          terraform apply -auto-approve
+
+      - name: Terraform Destroy
+        if: env.ACTION_TYPE == 'destroy'
+        run: |
+          terraform init
+          terraform destroy -auto-approve
