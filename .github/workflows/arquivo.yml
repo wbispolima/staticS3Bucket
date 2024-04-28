@@ -27,3 +27,8 @@ jobs:
         if: env.ACTION_TYPE == 'apply'
         run: |
           echo "aqui se for apply"
+
+      - name: Rodar se for destroy
+        if: env.ACTION_TYPE == 'destroy'
+        run: |
+          echo "aqui se for destroy"          
