@@ -34,9 +34,11 @@ jobs:
       - name: Terraform apply
         if: env.ACTION_TYPE == 'apply'
         run: |
+          cd terraform
           terraform apply --auto-approve
 
       - name: Terraform Destroy
         if: env.ACTION_TYPE == 'destroy'
         run: |
+          cd terraform
           terraform apply --destroy --auto-approve
