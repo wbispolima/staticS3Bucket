@@ -6,7 +6,7 @@ on:
       - test
   
 #  workflow_dispatch:
-#commnet
+
 jobs:
   terraform-action:
     runs-on: ubuntu-latest
