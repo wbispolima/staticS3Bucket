@@ -30,11 +30,11 @@ jobs:
         run: |
           cd terraform
           terraform init
-          terraform apply --auto--approve
+          terraform apply -auto--approve
 
       - name: Terraform Destroy
         if: env.ACTION_TYPE == 'destroy'
         run: |
           cd terraform
           terraform init
-          terraform apply --destroy --auto--approve
+          terraform apply --destroy -auto--approve
