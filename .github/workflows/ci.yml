@@ -1,6 +1,10 @@
 name: Terraform Apply or Destroy
 
 on: 
+  push:
+    branches:
+      -test
+  
   workflow_dispatch:
 
 jobs:
