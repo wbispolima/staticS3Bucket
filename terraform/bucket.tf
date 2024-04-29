@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "mybucket" {
-  bucket = "devops-teste-do-bispo"
+  bucket = "bispo-testando-devops-ifmt"
   
 }
 
