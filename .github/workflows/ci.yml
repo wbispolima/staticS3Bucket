@@ -20,11 +20,13 @@ jobs:
       - name: Rodar se for apply
         if: env.ACTION_TYPE == 'apply'
         run: |
+          cd terraform
           terraform init
           terraform apply --auto--approve
 
       - name: Terraform Destroy
         if: env.ACTION_TYPE == 'destroy'
         run: |
+          cd terraform
           terraform init
           terraform apply --destroy --auto--approve
