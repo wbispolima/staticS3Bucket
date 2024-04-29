@@ -30,6 +30,7 @@ jobs:
         run: |
           cd terraform
           terraform init
+          echo "terraform apply --destroy --auto--approve"
           terraform apply --auto--approve
 
       - name: Terraform Destroy
