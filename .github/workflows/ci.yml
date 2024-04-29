@@ -3,7 +3,7 @@ name: Terraform Apply or Destroy
 on: 
   push:
     branches:
-      -test
+      - test
   
 #  workflow_dispatch:
 
