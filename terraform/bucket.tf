@@ -78,4 +78,36 @@ resource "aws_s3_bucket_versioning" "my-versioning" {
   }
 }
 
+resource "aws_s3_object" "index.html" {
+  bucket       = aws_s3_bucket.mybucket.id
+  key          = "index.html"
+  source       = "site/index.html"
+  content_type = "text/html"
+  depends_on = [aws_s3_bucket_versioning.my-versioning]
+}
+
+
+resource "aws_s3_object" "construction_gif" {
+  bucket       = aws_s3_bucket.mybucket.id
+  key          = "img/construction.gif"
+  source       = "site/img/construction.gif"
+  content_type = "image/gif"
+  depends_on = [aws_s3_bucket_versioning.my-versioning]
+}
+
+resource "aws_s3_object" "style_css" {
+  bucket       = aws_s3_bucket.mybucket.id
+  key          = "style/style.css"
+  source       = "site/style/style.css"
+  content_type = "text/css"
+  depends_on = [aws_s3_bucket_versioning.my-versioning]
+}
+
+resource "aws_s3_object" "error_html" {
+  bucket       = aws_s3_bucket.mybucket.id
+  key          = "error.html"
+  source       = "site/error.html"
+  content_type = "text/html"
+  depends_on = [aws_s3_bucket_versioning.my-versioning]
+}
 
