@@ -3,8 +3,6 @@ resource "aws_s3_bucket" "mybucket" {
   
 }
 
-
-
 resource "aws_s3_bucket_public_access_block" "mybucket" {
   bucket                  = aws_s3_bucket.mybucket.id
   depends_on = [
@@ -16,19 +14,19 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_object" "upload_files" {
-  # Usar for para excluir arquivos começados por ponto
-  for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
+# resource "aws_s3_object" "upload_files" {
+#   # Usar for para excluir arquivos começados por ponto
+#   for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
 
-  bucket = aws_s3_bucket.mybucket.id
-  key    = each.value
-  source = "${path.module}/../site/${each.value}"
-  //confere as dependencias
-  depends_on = [
-    aws_s3_bucket.mybucket,
-    aws_s3_bucket_public_access_block.mybucket
-  ]
-}
+#   bucket = aws_s3_bucket.mybucket.id
+#   key    = each.value
+#   source = "${path.module}/../site/${each.value}"
+#   //confere as dependencias
+#   depends_on = [
+#     aws_s3_bucket.mybucket,
+#     aws_s3_bucket_public_access_block.mybucket
+#   ]
+# }
 
 resource "aws_s3_bucket_website_configuration" "mybucket" {
   bucket     = aws_s3_bucket.mybucket.id
