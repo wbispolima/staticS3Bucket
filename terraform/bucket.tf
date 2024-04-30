@@ -32,23 +32,6 @@ resource "aws_s3_bucket_website_configuration" "mybucket" {
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "site" {
-  bucket = aws_s3_bucket.mybucket.id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "site" {
-  bucket = aws_s3_bucket.mybucket.id
-
-  acl = "public-read"
-  depends_on = [
-    aws_s3_bucket_ownership_controls.site,
-    aws_s3_bucket_public_access_block.mybucket
-  ]
-}
-
 resource "aws_s3_bucket_policy" "meubucket_policy" {
   bucket     = aws_s3_bucket.mybucket.id
   depends_on = [
@@ -64,10 +47,7 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
         Effect    = "Allow",
         Principal = "*",
         Action    = "s3:GetObject"
-        Resource  = [
-          aws_s3_bucket.mybucket.arn,
-          "${aws_s3_bucket.mybucket.arn}/*"
-          ]
+        Resource  = "${aws_s3_bucket.mybucket.arn}/*"
       },
     ]
   })
