@@ -85,7 +85,7 @@ resource "aws_s3_object" "index_html" {
   content_type = "text/html"
   depends_on = [aws_s3_bucket_versioning.my-versioning]
 }
-
+#teste
 
 resource "aws_s3_object" "construction_gif" {
   bucket       = aws_s3_bucket.mybucket.id
