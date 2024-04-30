@@ -57,4 +57,4 @@ jobs:
         
       - name: Sync files to S3
         if: env.ACTION_TYPE == 'apply'
-        run: aws s3 sync site s3://bispo-testando-devops-ifmt --debug
+        run: aws s3 sync site s3://bispo-testando-devops-ifmt/ 
