@@ -48,15 +48,6 @@ resource "aws_s3_bucket_acl" "site" {
     aws_s3_bucket_public_access_block.mybucket
   ]
 }
-resource "aws_s3_bucket_acl" "site" {
-  bucket = aws_s3_bucket.site.id
-
-  acl = "public-read"
-  depends_on = [
-    aws_s3_bucket_ownership_controls.site,
-    aws_s3_bucket_public_access_block.site
-  ]
-}
 
 resource "aws_s3_bucket_policy" "meubucket_policy" {
   bucket     = aws_s3_bucket.mybucket.id
