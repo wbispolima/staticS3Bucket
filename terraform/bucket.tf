@@ -14,19 +14,7 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
   restrict_public_buckets = false
 }
 
-# resource "aws_s3_object" "upload_files" {
-#   # Usar for para excluir arquivos começados por ponto
-#   for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
 
-#   bucket = aws_s3_bucket.mybucket.id
-#   key    = each.value
-#   source = "${path.module}/../site/${each.value}"
-#   //confere as dependencias
-#   depends_on = [
-#     aws_s3_bucket.mybucket,
-#     aws_s3_bucket_public_access_block.mybucket
-#   ]
-# }
 
 resource "aws_s3_bucket_website_configuration" "mybucket" {
   bucket     = aws_s3_bucket.mybucket.id
@@ -44,6 +32,32 @@ resource "aws_s3_bucket_website_configuration" "mybucket" {
   }
 }
 
+resource "aws_s3_bucket_ownership_controls" "site" {
+  bucket = aws_s3_bucket.site.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "site" {
+  bucket = aws_s3_bucket.site.id
+
+  acl = "public-read"
+  depends_on = [
+    aws_s3_bucket_ownership_controls.site,
+    aws_s3_bucket_public_access_block.mybucket
+  ]
+}
+resource "aws_s3_bucket_acl" "site" {
+  bucket = aws_s3_bucket.site.id
+
+  acl = "public-read"
+  depends_on = [
+    aws_s3_bucket_ownership_controls.site,
+    aws_s3_bucket_public_access_block.site
+  ]
+}
+
 resource "aws_s3_bucket_policy" "meubucket_policy" {
   bucket     = aws_s3_bucket.mybucket.id
   depends_on = [
@@ -58,13 +72,11 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
         Sid       = "PublicReadGetObject"
         Effect    = "Allow",
         Principal = "*",
-        Action    = [
-          "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket"
+        Action    = "s3:GetObject"
+        Resource  = [
+          aws_s3_bucket.mybucket.arn,
+          "${aws_s3_bucket.mybucket.arn}/*"
           ]
-        Resource  = "${aws_s3_bucket.mybucket.arn}/*"
       },
     ]
   })
@@ -83,36 +95,17 @@ resource "aws_s3_bucket_versioning" "my-versioning" {
   }
 }
 
-resource "aws_s3_object" "index_html" {
-  bucket       = aws_s3_bucket.mybucket.id
-  key          = "index.html"
-  source       = "site/index.html"
-  content_type = "text/html"
-  depends_on = [aws_s3_bucket_versioning.my-versioning]
-}
-#teste
+resource "aws_s3_object" "upload_files" {
+  # Usar for para excluir arquivos começados por ponto
+  #for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
 
-resource "aws_s3_object" "construction_gif" {
-  bucket       = aws_s3_bucket.mybucket.id
-  key          = "img/construction.gif"
-  source       = "site/img/construction.gif"
-  content_type = "image/gif"
-  depends_on = [aws_s3_bucket_versioning.my-versioning]
-}
-
-resource "aws_s3_object" "style_css" {
-  bucket       = aws_s3_bucket.mybucket.id
-  key          = "style/style.css"
-  source       = "site/style/style.css"
-  content_type = "text/css"
-  depends_on = [aws_s3_bucket_versioning.my-versioning]
-}
-
-resource "aws_s3_object" "error_html" {
-  bucket       = aws_s3_bucket.mybucket.id
-  key          = "error.html"
-  source       = "site/error.html"
-  content_type = "text/html"
-  depends_on = [aws_s3_bucket_versioning.my-versioning]
+  bucket = aws_s3_bucket.mybucket.id
+  key    = each.value
+  source = "${path.module}/../site/${each.value}"
+  //confere as dependencias
+  depends_on = [
+    aws_s3_bucket.mybucket,
+    aws_s3_bucket_versioning.my-versioning
+  ]
 }
 
