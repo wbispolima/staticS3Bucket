@@ -33,14 +33,14 @@ resource "aws_s3_bucket_website_configuration" "mybucket" {
 }
 
 resource "aws_s3_bucket_ownership_controls" "site" {
-  bucket = aws_s3_bucket.site.id
+  bucket = aws_s3_bucket.mybucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
 resource "aws_s3_bucket_acl" "site" {
-  bucket = aws_s3_bucket.site.id
+  bucket = aws_s3_bucket.mybucket.id
 
   acl = "public-read"
   depends_on = [
