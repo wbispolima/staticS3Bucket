@@ -58,7 +58,12 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
         Sid       = "PublicReadGetObject"
         Effect    = "Allow",
         Principal = "*",
-        Action    = "s3:GetObject",
+        Action    = [
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:DeleteObject",
+          "s3:ListBucket"
+          ]
         Resource  = "${aws_s3_bucket.mybucket.arn}/*"
       },
     ]
