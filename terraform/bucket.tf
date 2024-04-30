@@ -72,6 +72,7 @@ resource "aws_s3_object" "upload_files" {
 
   bucket = aws_s3_bucket.mybucket.id
   key    = each.value
+  content_type = data.external.get_mime[each.value].result.mime
   source = "${path.module}/../site/${each.value}"
   //confere as dependencias
   depends_on = [
