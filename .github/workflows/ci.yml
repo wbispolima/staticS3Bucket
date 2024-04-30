@@ -51,7 +51,10 @@ jobs:
         if: env.ACTION_TYPE == 'apply'
         run: sleep 45  # Espera por 30 segundos 
         
+      - name: List directory contents
+        if: env.ACTION_TYPE == 'apply'
+        run: ls -la
         
       - name: Sync files to S3
         if: env.ACTION_TYPE == 'apply'
-        run: aws s3 sync ./site s3://bispo-testando-devops-ifmt
+        run: aws s3 sync ./site s3://bispo-testando-devops-ifmt --debug
