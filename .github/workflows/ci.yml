@@ -46,15 +46,12 @@ jobs:
         run: |
           cd terraform
           terraform apply --destroy --auto-approve
-          
-      - name: Check S3 bucket availability
+
+      - name: Wait for S3 bucket availability
         if: env.ACTION_TYPE == 'apply'
-        run: |
-          until aws s3 ls "s3://nome-do-seu-bucket"; do
-            echo "Waiting for bucket to be available..."
-            sleep 10
-          done    
-                
+        run: sleep 45  # Espera por 30 segundos 
+        
+        
       - name: Sync files to S3
         if: env.ACTION_TYPE == 'apply'
         run: aws s3 sync ./site s3://bispo-testando-devops-ifmt
