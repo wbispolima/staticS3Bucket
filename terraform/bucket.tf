@@ -88,7 +88,7 @@ resource "aws_s3_bucket_versioning" "my-versioning" {
 
 resource "aws_s3_object" "upload_files" {
   # Usar for para excluir arquivos começados por ponto
-  #for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
+  for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
 
   bucket = aws_s3_bucket.mybucket.id
   key    = each.value
