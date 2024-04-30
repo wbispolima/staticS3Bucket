@@ -49,10 +49,10 @@ jobs:
 
       - name: Wait for S3 bucket availability
         if: env.ACTION_TYPE == 'apply'
-        run: sleep 20  # Espera por 30 segundos 
+        run: sleep 5  # Espera por 30 segundos 
         
   
       - name: Sync files to S3
         if: env.ACTION_TYPE == 'apply'
-        run: aws s3 sync site s3://bispo-testando-devops-ifmt \
+        run: upload site/index.html to s3://bispo-testando-devops-ifmt/index.html
         
