@@ -5,7 +5,7 @@ on:
     branches:
       - test
   
-#  workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   terraform-action:
@@ -27,7 +27,8 @@ jobs:
 
       - name: Read env file and set ACTION variable
         run: |
-          echo "ACTION_TYPE=$(grep 'ACTION_TYPE' .github/workflows/action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
+          echo "ACTION_TYPE=$(grep '^[^#]*ACTION_TYPE=' .github/workflows/action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
+
 
       - name: Initial Check for ACTION_TYPE
         if: env.ACTION_TYPE == 'apply' || env.ACTION_TYPE == 'destroy'
