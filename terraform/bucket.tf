@@ -72,7 +72,7 @@ resource "aws_s3_object" "bucket_upload_files" {
   bucket       = aws_s3_bucket.mybucket.id
   key          = each.value
   source       = "${path.module}/../site/${each.value}"
-  content_type = var.content_types[trimsuffix(each.value, substr(each.value, length(each.value) - lastindex(each.value, "."), length(each.value)))]
+  content_type = var.content_types[element(reverse(split(".", each.value)), 0)]
   depends_on = [
     aws_s3_bucket.mybucket,
     aws_s3_bucket_public_access_block.mybucket_block,
