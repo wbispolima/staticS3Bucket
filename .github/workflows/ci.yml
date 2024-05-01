@@ -32,7 +32,7 @@ jobs:
       - name: Print ACTION_TYPE value
         run: echo "ACTION_TYPE is ${{ env.ACTION_TYPE }}"
 
-        - name: Initial Check for ACTION_TYPE
+      - name: Initial Check for ACTION_TYPE
         if: env.ACTION_TYPE == 'apply' || env.ACTION_TYPE == 'destroy'
         run: |
             cd terraform
