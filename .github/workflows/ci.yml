@@ -29,12 +29,15 @@ jobs:
         run: |
           echo "ACTION_TYPE=$(grep '^ACTION_TYPE=' .github/workflows/action-config.env | cut -d'=' -f2)" >> $GITHUB_ENV
 
-      - name: Initial Check for ACTION_TYPE
+      - name: Print ACTION_TYPE value
+        run: echo "ACTION_TYPE is ${{ env.ACTION_TYPE }}"
+
+        - name: Initial Check for ACTION_TYPE
         if: env.ACTION_TYPE == 'apply' || env.ACTION_TYPE == 'destroy'
         run: |
             cd terraform
             terraform init
-                      
+                                
       - name: Terraform apply
         if: env.ACTION_TYPE == 'apply'
         run: |
