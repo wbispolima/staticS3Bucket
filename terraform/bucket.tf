@@ -3,7 +3,7 @@ resource "aws_s3_bucket" "mybucket" {
   
 }
 
-resource "aws_s3_bucket_public_access_block" "mybucket" {
+resource "aws_s3_bucket_public_access_block" "mybucket_block" {
   bucket                  = aws_s3_bucket.mybucket.id
   depends_on = [
     aws_s3_bucket.mybucket
@@ -16,11 +16,11 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
 
 
 
-resource "aws_s3_bucket_website_configuration" "mybucket" {
+resource "aws_s3_bucket_website_configuration" "mybucket_conf" {
   bucket     = aws_s3_bucket.mybucket.id
   depends_on = [
     aws_s3_bucket.mybucket,
-    aws_s3_bucket_public_access_block.mybucket,
+    aws_s3_bucket_public_access_block.mybucket_block
     ]
 
   index_document {
@@ -36,8 +36,8 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
   bucket     = aws_s3_bucket.mybucket.id
   depends_on = [
     aws_s3_bucket.mybucket,
-    aws_s3_bucket_public_access_block.mybucket,
-    aws_s3_bucket_website_configuration.mybucket,
+    aws_s3_bucket_public_access_block.mybucket_block,
+    aws_s3_bucket_website_configuration.mybucket_conf
   ]
   policy = jsonencode({
     Version = "2012-10-17",
@@ -53,31 +53,32 @@ resource "aws_s3_bucket_policy" "meubucket_policy" {
   })
 }
 
-resource "aws_s3_bucket_versioning" "my-versioning" {
+resource "aws_s3_bucket_versioning" "mybucket_versioning" {
   bucket     = aws_s3_bucket.mybucket.id
   depends_on = [
     aws_s3_bucket.mybucket,
-    aws_s3_bucket_public_access_block.mybucket,
-    aws_s3_bucket_website_configuration.mybucket,
-    aws_s3_bucket_policy.meubucket_policy,
+    aws_s3_bucket_public_access_block.mybucket_block,
+    aws_s3_bucket_website_configuration.mybucket_conf,
+    aws_s3_bucket_policy.meubucket_policy
   ]
   versioning_configuration {
     status = "Enabled"
   }
 }
 
-resource "aws_s3_object" "upload_files" {
-  # Usar for para excluir arquivos começados por ponto
-  for_each = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
 
-  bucket = aws_s3_bucket.mybucket.id
-  key    = each.value
-  content_type = data.external.get_mime[each.value].result.mime
-  source = "${path.module}/../site/${each.value}"
-  //confere as dependencias
+resource "aws_s3_object" "bucket_upload_files" {
+  for_each     = { for f in fileset("${path.module}/../site", "**/*") : f => f if !startswith(basename(f), ".") }
+  bucket       = aws_s3_bucket.mybucket.id
+  key          = each.value
+  source       = "${path.module}/../site/${each.value}"
+  content_type = var.content_types[trimsuffix(each.value, substr(each.value, length(each.value) - lastindex(each.value, "."), length(each.value)))]
   depends_on = [
     aws_s3_bucket.mybucket,
-    aws_s3_bucket_versioning.my-versioning
+    aws_s3_bucket_public_access_block.mybucket_block,
+    aws_s3_bucket_website_configuration.mybucket_conf,
+    aws_s3_bucket_policy.meubucket_policy,
+    aws_s3_bucket_versioning.mybucket_versioning
   ]
 }
 
